@@ -4,8 +4,12 @@
 	"autoload": {
 		"classmap": ["classes"]
 	},
+	"config": {
+		"sort-packages": true
+	},
 	"require": {
-		"symfony/yaml": "^6",
-		"ssh-client/ssh-client": "^0"
+		"php": "^8",
+		"ssh-client/ssh-client": "^0",
+		"symfony/yaml": "^6"
 	}
 }
