@@ -1,0 +1,17 @@
+---
+###
+# Example Servers
+###
+- ip: 1.2.3.4
+  port: 222
+  user: abc
+  comment: My 1st Server
+  authorized_users:
+    - my_name_1
+    - my_name_2
+- ip: 5.6.7.8
+  port: 22
+  user: xyz
+  comment: My 2nd Server
+  authorized_users:
+    - my_name_1
