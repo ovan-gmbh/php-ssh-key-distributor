@@ -1,0 +1,9 @@
+my_name_1:
+  fullname: Example SSH Key
+  keys:
+    - ssh-rsa AAAA
+my_name_2:
+  fullname: Example SSH Keys
+  keys:
+    - ssh-rsa BBBB
+    - ssh-rsa CCCC
