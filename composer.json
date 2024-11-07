@@ -7,9 +7,15 @@
 	"config": {
 		"sort-packages": true
 	},
+	"repositories": [
+		{
+			"type": "vcs",
+			"url": "https://github.com/ovan-gmbh/ssh-client"
+		}
+	],
 	"require": {
 		"php": "^8",
 		"ssh-client/ssh-client": "^0",
-		"symfony/yaml": "^6"
+		"symfony/yaml": "^7"
 	}
 }
