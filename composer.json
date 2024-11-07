@@ -4,8 +4,18 @@
 	"autoload": {
 		"classmap": ["classes"]
 	},
+	"config": {
+		"sort-packages": true
+	},
+	"repositories": [
+		{
+			"type": "vcs",
+			"url": "https://github.com/ovan-gmbh/ssh-client"
+		}
+	],
 	"require": {
-		"symfony/yaml": "^6",
-		"ssh-client/ssh-client": "^0"
+		"php": "^8",
+		"ssh-client/ssh-client": "^0",
+		"symfony/yaml": "^7"
 	}
 }
