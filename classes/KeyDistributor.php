@@ -49,7 +49,6 @@ class KeyDistributor
 		$short_options = [
 			// without value
 			'h' => 'Short for `help`',
-			'd' => 'Short for `dry-run`',
 			// with value
 			'i:' => 'Short for `identity`',
 			's:' => 'Short for `servers`',
@@ -60,7 +59,6 @@ class KeyDistributor
 		$long_options = [
 			// without value
 			'help' => 'This help screen :)',
-			'dry-run' => 'To verify your configuration without actually distributing those changes',
 			// with value
 			'identity:' => 'Custom path to identity file, default `id_rsa`',
 			'servers:' => 'Custom path to servers file, default `servers.yml`',
@@ -170,11 +168,6 @@ class KeyDistributor
 
 		$servers = Yaml::parseFile($servers_file);
 		$keys = Yaml::parseFile($keys_file);
-		$dry_run = array_key_exists('d', $options) || array_key_exists('dry-run', $options);
-		if ($dry_run)
-		{
-			$this->printMessage('This is a dry run which will not write the `authorized_keys` file to the servers.');
-		}
 
 		foreach ($servers as $server)
 		{
@@ -214,7 +207,7 @@ class KeyDistributor
 				$success = false;
 			}
 
-			if (!$dry_run && $success === null)
+			if ($success === null)
 			{
 				file_put_contents('authorized_keys', implode("\n", $server_keys) . "\n");
 				try
@@ -228,22 +221,6 @@ class KeyDistributor
 				}
 
 				unlink('authorized_keys');
-			}
-			else
-			{
-				$scp_client = $builder->buildClient();
-				try
-				{
-					$result = $scp_client->exec(
-						commandArguments: ['echo ', 'yes'],
-						timeout: self::TIMEOUT,
-					)->getOutput();
-					$success = $result === 'yes' . "\n";
-				}
-				catch (Exception $e)
-				{
-					$success = false;
-				}
 			}
 
 			printf(
