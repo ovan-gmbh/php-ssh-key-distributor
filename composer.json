@@ -7,12 +7,6 @@
 	"config": {
 		"sort-packages": true
 	},
-	"repositories": [
-		{
-			"type": "vcs",
-			"url": "https://github.com/ovan-gmbh/ssh-client"
-		}
-	],
 	"require": {
 		"php": "^8",
 		"phpseclib/phpseclib": "^3",
