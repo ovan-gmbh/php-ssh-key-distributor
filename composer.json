@@ -15,7 +15,7 @@
 	],
 	"require": {
 		"php": "^8",
-		"ssh-client/ssh-client": "^0",
+		"phpseclib/phpseclib": "^3",
 		"symfony/yaml": "^7"
 	}
 }

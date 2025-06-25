@@ -1,8 +1,8 @@
 <?php
 
 use Symfony\Component\Yaml\Yaml;
-use SSHClient\ClientConfiguration\ClientConfiguration;
-use SSHClient\ClientBuilder\ClientBuilder;
+use phpseclib3\Net\SFTP;
+use phpseclib3\Crypt\PublicKeyLoader;
 
 class KeyDistributor
 {
@@ -204,25 +204,22 @@ class KeyDistributor
 					}
 				}
 			}
-			$config = new ClientConfiguration($server['ip'], $server['user']);
-			$config->setOptions([
-				'IdentityFile' => $identity_file,
-				'IdentitiesOnly' => 'yes',
-				'Port' => $server['port'],
-			]);
-			$builder = new ClientBuilder($config);
+			$privateKey = PublicKeyLoader::loadPrivateKey(file_get_contents($identity_file));
+			$sftp = new SFTP($server['ip'], $server['port']);
+			$sftp->setTimeout(self::TIMEOUT);
 
-			if (!$dry_run)
+			$success = null;
+			if (!$sftp->login($server['user'], $privateKey))
+			{
+				$success = false;
+			}
+
+			if (!$dry_run && $success === null)
 			{
 				file_put_contents('authorized_keys', implode("\n", $server_keys) . "\n");
-				$scp_client = $builder->buildSecureCopyClient();
 				try
 				{
-					$scp_client->copy(
-						fromPath: 'authorized_keys',
-						toPath: $scp_client->getRemotePath('~/.ssh/authorized_keys'),
-						timeout: self::TIMEOUT,
-					);
+					$sftp->put('~/.ssh/authorized_keys', file_get_contents('authorized_keys'));
 					$success = true;
 				}
 				catch (Exception $e)
